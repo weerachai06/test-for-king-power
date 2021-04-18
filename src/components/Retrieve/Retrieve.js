@@ -28,22 +28,6 @@ export default function Retrieve() {
         }
         if (isLoaded === false) {
             //setPages(Array(Math.ceil(count)).fill().map((x, i) => i + 1))
-            const data = JSON.parse(localStorage.getItem('jobs'));
-            if (data !== null) {
-                const newGroup = data.map((item, index) => {
-                    const group = parseInt((index) / perpage)
-                    return {
-                        ...item,
-                        group: group,
-                        isChecked: item.isChecked
-                    }
-                })
-                //etPages(arr)
-                setDatas(newGroup)
-                setisLoaded(true)
-                //setDatas(datas)
-            }
-            //console.log(datas)
             //console.log(datas.filter((item, index) => index < perpage))
         }
 
@@ -67,12 +51,11 @@ export default function Retrieve() {
         }
     }
 
-    const handleChecked = (id) => {
+    const handleChecked = (event, id) => {
         const newGroup = datas.map((item, index) => {
-            const group = parseInt((index) / perpage)
             return {
                 ...item,
-                group: group,
+                group: parseInt((index) / perpage),
                 isChecked: (item.id === id) ? !item.isChecked : item.isChecked
             }
         })
@@ -85,14 +68,15 @@ export default function Retrieve() {
         setisLoaded(false)
     }
 
-    const handleCheckedAll = () => {
-
+    const handleCheckedAll = (event) => {
+        const value = (event.target.value === "true") ? true : false;
         const newUpdated = datas.map((item, index) => {
             const group = parseInt((index) / perpage)
+            console.log(item)
             return {
                 ...item,
                 group: group,
-                isChecked: item.group === page - 1 ? !item.isChecked : item.isChecked
+                isChecked: item.group === page - 1 ? value : item.isChecked
             }
         })
         setDeletedAll(!deletedAll)
@@ -114,6 +98,7 @@ export default function Retrieve() {
                 }
             })
             setDatas(newGroup)
+            console.log(newGroup)
             setisLoaded(false)
             setDeletedAll(false)
         }
@@ -128,7 +113,7 @@ export default function Retrieve() {
                 </MDBCol>
                 <MDBCol lg="10">
                     <div style={{ textAlign: 'right' }}>
-                        {page === 1 ? '' : <button className={`btn btn-sm btn-primary`} onClick={event => handlePage(page - 1)}>PREV</button>}
+                        {page === 1 ? '' : <button className={`btn btn-sm btn-primary`} onClick={event => handlePage(event, page - 1)}>PREV</button>}
                         {Array.from({ length: Math.ceil(datas.length / perpage) }, (x, i) =>
                             <button key={i} className={`btn btn-sm ${(i + 1) === page ? 'btn-success' : 'btn-seccondary'}`} onClick={event => handlePage(i + 1)}>{i + 1}</button>
                         )}
@@ -142,7 +127,7 @@ export default function Retrieve() {
                     <tr>
                         <th scope="col">
                             <div>
-                                <input type="checkbox" name="checkedAll" checked={deletedAll} onChange={handleCheckedAll} />
+                                <input type="checkbox" name="checkedAll" checked={deletedAll} value={!deletedAll} onChange={handleCheckedAll} />
                             </div>
                         </th>
                         <th scope="col">Name</th>
@@ -155,7 +140,9 @@ export default function Retrieve() {
                 <tbody>
                     {datas.filter(item => item.group === page - 1).map((item, index) =>
                         <tr key={index}>
-                            <td><input name={item.id} type="checkbox" checked={item.isChecked === true} onChange={event => handleChecked(item.id)} /></td>
+
+                            <td>
+                                <input name={item.id} type="checkbox" checked={item.isChecked} onChange={event => handleChecked(event, item.id)} /></td>
                             <td>{item.firstName} {item.lastName}</td>
                             <td>{item.gender}</td>
                             <td>{item.phoneCode} {item.phoneNumber}</td>
