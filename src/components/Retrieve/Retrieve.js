@@ -64,7 +64,7 @@ export default function Retrieve() {
         setisLoaded(false)
     }
 
-    const handlePage = (page) => {
+    const handlePage = (event, page) => {
         setPage(page)
         setisLoaded(false)
     }
@@ -116,9 +116,9 @@ export default function Retrieve() {
                     <div style={{ textAlign: 'right' }}>
                         {page === 1 ? '' : <button className={`btn btn-sm btn-primary`} onClick={event => handlePage(event, page - 1)}>PREV</button>}
                         {Array.from({ length: Math.ceil(datas.length / perpage) }, (x, i) =>
-                            <button key={i} className={`btn btn-sm ${(i + 1) === page ? 'btn-success' : 'btn-seccondary'}`} onClick={event => handlePage(i + 1)}>{i + 1}</button>
+                            <button key={i} className={`btn btn-sm ${(i + 1) === page ? 'btn-success' : 'btn-seccondary'}`} onClick={event => handlePage(event, i + 1)}>{i + 1}</button>
                         )}
-                        {page === Math.ceil(datas.length / perpage) ? '' : <button className={`btn btn-sm btn-primary`} onClick={event => handlePage(page + 1)}>Next</button>}
+                        {page === Math.ceil(datas.length / perpage) ? '' : <button className={`btn btn-sm btn-primary`} onClick={event => handlePage(event, page + 1)}>Next</button>}
                     </div>
                 </MDBCol>
             </MDBRow>
