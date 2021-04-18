@@ -53,6 +53,7 @@ export default function Retrieve() {
 
     const handleChecked = (event, id) => {
         const newGroup = datas.map((item, index) => {
+            console.log(id)
             return {
                 ...item,
                 group: parseInt((index) / perpage),

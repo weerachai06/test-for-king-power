@@ -53,8 +53,6 @@ function CitizenID({ props, dispatch, pattern = { require: false, pattern: null 
                 } : data;
             })
         )
-
-        //inputFocus[index + 1].current.focus();
     }
 
     const handleKeyPress = (event, index) => {
@@ -85,8 +83,19 @@ function CitizenID({ props, dispatch, pattern = { require: false, pattern: null 
                 setErrState(``)
             }
         }
-        
+
         dispatch({ type: "STORE_CITIZENID", citizenID: citizenIDState.map((item) => item.value).join('-') })
+        if (props.citizenID !== "") {
+            if (props.citizenID.match(/(\d{1})-(\d{4})-(\d{5})-(\d{2})-(\d{1})/) === null) {
+                setErrState('Citizen ID is invalid.')
+            } else {
+                setErrState('')
+                //dispatch({ type: 'CLEAR_ERR_CITIZENID'})
+            }
+        }
+        dispatch({ type: 'STORE_ERR_CITIZENID', ErrCitizenID: errState })
+
+
         if (props.title !== "" && isLoaded === false) {
             const splitData = props.citizenID.split("-")
             splitData.forEach((item, index) => {
@@ -104,7 +113,7 @@ function CitizenID({ props, dispatch, pattern = { require: false, pattern: null 
             })
         }
 
-    }, [value, pattern, name, onChange, citizenIDState, isLoaded, dispatch, props])
+    }, [value, pattern, name, onChange, citizenIDState, isLoaded, dispatch, props, errState])
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -118,7 +127,7 @@ function CitizenID({ props, dispatch, pattern = { require: false, pattern: null 
                     </div>
                 )
             }
-            {errState}
+            <span style={{ color: 'red' }}><Camel2Title string={errState} /></span>
         </div>
     )
 }

@@ -67,9 +67,9 @@ function Index({ Datas, dispatch }) {
     const handleChange = (event) => {
         //console.log(event)
         const { value, name } = event.target;
-        console.log(Datas.gender)
         dispatch({ type: 'STORE_' + name.toUpperCase(), [name]: value })
     }
+
 
     const handleSubmit = (event) => {
         //console.log(uuidv4())
@@ -98,11 +98,10 @@ function Index({ Datas, dispatch }) {
             if (oldData !== null) {
                 var findKey = oldData.find(el => el.id === Datas.id)
                 if (findKey) {
-                    console.log(oldData.indexOf(findKey))//บรรทัดนี้เวิร์ค
                     const index = oldData.indexOf(findKey)//บรรทัดนี้เวิร์ค
 
                     const data = oldData.map((item, j) => {
-                        return (j === index)? newDataForSave: item;
+                        return (j === index) ? newDataForSave : item;
                     })
                     localStorage.setItem('jobs', JSON.stringify(data))
                 } else {
@@ -123,7 +122,7 @@ function Index({ Datas, dispatch }) {
     return (
         <>
             <form>
-                <Link className="btn btn-primary" to="/" ><MDBIcon icon="arrow-circle-left" /> Go back.</Link>
+                <Link className="btn btn-primary" to="/"><MDBIcon icon="arrow-circle-left" /> Go back.</Link>
                 <MDBRow>
                     <MDBCol sm="12" lg="4">
                         <Select
