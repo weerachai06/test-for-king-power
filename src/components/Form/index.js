@@ -94,6 +94,12 @@ function Index({ Datas, dispatch }) {
             const str = localStorage.getItem('jobs');
             const oldData = JSON.parse(str);
             const values = [{ ...newDataForSave }];
+
+            const keyOfData = Object.keys(newDataForSave)
+            keyOfData.forEach(item => {
+                const keyUpperCase = item.toUpperCase()
+                dispatch({ type: "CLEAR_" + keyUpperCase })
+            })
             //Update Data
             if (oldData !== null) {
                 var findKey = oldData.find(el => el.id === Datas.id)
