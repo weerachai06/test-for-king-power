@@ -2,6 +2,7 @@
   "name": "test-for-apply-job",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://weerachai06.github.io/test-for-king-power/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
