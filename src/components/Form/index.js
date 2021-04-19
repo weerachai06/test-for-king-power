@@ -51,6 +51,7 @@ function Index({ Datas, dispatch }) {
         if (isGetAllData === false) {
             const fetch = JSON.parse(localStorage.getItem('jobs'))
             dispatch({ type: 'STORE_ID', id: getIdParam })
+            dispatch({ type: 'STORE_CITIZENID', citizenID: "" })
             //console.log(Datas.id)
             const findKey = fetch.find(el => el.id === getIdParam)
             //console.log(findKey)

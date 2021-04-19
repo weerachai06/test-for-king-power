@@ -11,7 +11,7 @@ export default function Retrieve() {
     React.useEffect(() => {
         if (datas.length === 0 && isLoaded === false) {
             const data = JSON.parse(localStorage.getItem('jobs'));
-            if (data !== null) {
+            if (data) {
                 const newGroup = data.map((item, index) => {
                     const group = parseInt((index) / perpage)
                     return {
@@ -24,6 +24,8 @@ export default function Retrieve() {
                 setDatas(newGroup)
                 setisLoaded(true)
                 //setDatas(datas)
+            } else {
+                localStorage.setItem('jobs',JSON.stringify([]))
             }
         }
         if (isLoaded === false) {
