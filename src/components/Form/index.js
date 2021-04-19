@@ -15,6 +15,7 @@ const defaultPhoneCode = [];
 
 function Index({ Datas, dispatch }) {
     const { id } = useParams()
+    const randomId = uuidv4();
     const [nationalityState, setNationality] = React.useState(defaultNationality)
     const [phoneCodeState, setPhoneCode] = React.useState(defaultPhoneCode)
     const [isGetAllData, setIsAllData] = React.useState(true);
@@ -41,24 +42,30 @@ function Index({ Datas, dispatch }) {
         }
 
         if (getIdParam === "") {
-            const dataId = id ? id : uuidv4();
+            console.log(id !== undefined)
+            const dataId = (id !== undefined) ? id : randomId;
             setIdParam(dataId)
             setIsAllData(false)
         }
 
         if (isGetAllData === false) {
             const fetch = JSON.parse(localStorage.getItem('jobs'))
-            //dispatch({ type: 'STORE_ID', id: getIdParam })
+            dispatch({ type: 'STORE_ID', id: getIdParam })
             //console.log(Datas.id)
-            console.log(getIdParam)
             const findKey = fetch.find(el => el.id === getIdParam)
             //console.log(findKey)
             if (findKey) {
+                //Found 
                 const parseDaa = { ...findKey }
-                console.log(findKey)
                 //const parseDaa = { ...findKey }
                 Object.keys(parseDaa).forEach(item => {
                     dispatch({ type: 'STORE_' + item.toUpperCase(), [item]: findKey[item] })
+                })
+            } else {
+                //Not found or create data
+                Object.keys(Datas).filter(item => (item.match(/^Err/) === null) && item !== "id").forEach(item => {
+                    //console.log(item)
+                    dispatch({ type: 'STORE_' + item.toUpperCase(), [item]: "" })
                 })
             }
 
@@ -66,7 +73,7 @@ function Index({ Datas, dispatch }) {
         }
         //console.log(Datas)
 
-    }, [nationalityState, phoneCodeState, Datas, dispatch, getIdParam, isGetAllData, id])
+    }, [nationalityState, phoneCodeState, dispatch, getIdParam, isGetAllData, id, Datas, randomId])
 
 
     const handleChange = (event) => {
