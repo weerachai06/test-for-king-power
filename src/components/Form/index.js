@@ -15,11 +15,11 @@ const defaultPhoneCode = [];
 
 function Index({ Datas, dispatch }) {
     const { id } = useParams()
-    const parmamId = (id) ? id : uuidv4();
     const [nationalityState, setNationality] = React.useState(defaultNationality)
     const [phoneCodeState, setPhoneCode] = React.useState(defaultPhoneCode)
-    const [isGetAllData, setIsAllData] = React.useState(false);
+    const [isGetAllData, setIsAllData] = React.useState(true);
     const [isSaved, setIsSaved] = React.useState(false)
+    const [getIdParam, setIdParam] = React.useState('');
     React.useEffect(() => {
 
         if (nationalityState.length === 0 && phoneCodeState.length === 0) {
@@ -40,28 +40,33 @@ function Index({ Datas, dispatch }) {
             }).catch(err => console.log(err))
         }
 
-        if (isGetAllData === false) {
-            if (!Datas.id) {
-                dispatch({ type: "STORE_ID", id: parmamId });
-            } else {
-                const jobs = localStorage.getItem('jobs')
-                const fetch = JSON.parse(jobs);
-                if (fetch != null) {
-                    const findKey = fetch.find(el => el.id === Datas.id)
-                    if (findKey) {
-                        const parseDaa = { ...findKey }
-                        Object.keys(parseDaa).forEach(item => {
-                            dispatch({ type: 'STORE_' + item.toUpperCase(), [item]: findKey[item] })
-                        })
-                        setIsAllData(true)
-                    }
-                }
+        if (getIdParam === "") {
+            const dataId = id ? id : uuidv4();
+            setIdParam(dataId)
+            setIsAllData(false)
+        }
 
+        if (isGetAllData === false) {
+            const fetch = JSON.parse(localStorage.getItem('jobs'))
+            //dispatch({ type: 'STORE_ID', id: getIdParam })
+            //console.log(Datas.id)
+            console.log(getIdParam)
+            const findKey = fetch.find(el => el.id === getIdParam)
+            //console.log(findKey)
+            if (findKey) {
+                const parseDaa = { ...findKey }
+                console.log(findKey)
+                //const parseDaa = { ...findKey }
+                Object.keys(parseDaa).forEach(item => {
+                    dispatch({ type: 'STORE_' + item.toUpperCase(), [item]: findKey[item] })
+                })
             }
+
+            setIsAllData(true)
         }
         //console.log(Datas)
 
-    }, [nationalityState, phoneCodeState, Datas, parmamId, dispatch, isGetAllData])
+    }, [nationalityState, phoneCodeState, Datas, dispatch, getIdParam, isGetAllData, id])
 
 
     const handleChange = (event) => {
