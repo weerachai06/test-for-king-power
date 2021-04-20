@@ -7,7 +7,7 @@ import Retrieve from './components/Retrieve/Retrieve';
 
 export default function App() {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename={window.location.hostname === "weerachai06.github.io" ? process.env.PUBLIC_URL : `/`}>
       <div>
         <MDBContainer>
           <div className="text-center mt-3"><h1>CRUD - Exam</h1></div>
